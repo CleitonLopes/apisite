@@ -82,4 +82,20 @@ class InicioController extends Controller
     	return response()->json($album);
 
     }
+
+    public function update(Request $request, $id)
+    {
+    	$album = $this->album->findOrFail($id);
+
+    	$album->update($request->all());
+
+    	return response()->json($album);
+
+    }
+
+    public function destroy($id)
+    {
+    	$album = $this->album->findOrFail($id);
+    	return response()->json($album->delete());
+    }
 }
