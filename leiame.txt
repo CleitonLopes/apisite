@@ -1,0 +1,84 @@
+OAuth2
+------
+
+Instalação laravel passport
+
+- composer require laravel/passport
+
+Providers app.php
+
+- Laravel\Passport\PassportServiceProvider::class
+
+Rodar migrate para rodar as tabelas para trabalhar com OAuth2
+
+- php artisan migrate
+
+Gerar dados do auth
+
+- php artisan passport:install
+
+No model User adicionar mais uma trait do passport
+
+- use Laravel\Passport\HasApiTokens;
+- use HasApiTokens, Notifiable;
+
+Alterar configurações no arquivo auth.php
+
+- Trocar o driver de token para passport dentro de guards[api]
+
+Alterar AuthServiceProvider
+
+- Adicionar use Laravel\Passport\Passport;
+- No metodo boot() adicionar Passport::routes()
+
+Alterar Routes/api.php
+
+- Route::group(['middleware' => ['auth:api']], function () {
+
+	// rotas protegidas aqui
+});
+
+Rota de atenticação
+
+- POST
+- uri - /oauth/token
+
+- grant_type  - password
+
+- client_id - 2
+
+- client_secret - 9lg0m0CK6HAyHi23xXrdTgKRLNXVb7cFXdrmuLhG
+
+- username - email criado table User cleitoncotrin@gmail.com
+
+- password - 123456
+
+- scope
+
+Pegar o token retornado
+
+Enviar Token No Header
+
+- Authorization - Bearer accessToken
+
+
+Liberando Cors no laravel
+
+- composer require barryvdh/laravel-cors
+
+Adicionar providers app.php
+
+- Barryvdh\Cors\ServiceProvider::class
+
+- rodar comando php artisan vendor:publish --provider="Barryvdh\Cors\ServiceProvider"
+
+- Adicionar em routes api.php o middleware ['cors', 'auth:api']] e dentro de Http/Kernel adicionar em
+routeMiddleware 'cors' => \Barryvdh\Cors\HandleCors::class,
+
+Mudando o tempo de vida do token
+*********************************
+
+- Dica para produção, colocar apenas em horas, dev nem colocar
+- Em AuthServiceProvider adicionar use Carbon\Carbon e no metodo boot  Passport::tokensExpireIn(Carbon::now()->addHours(8)),
+Passport::refreshTokensExpireIn(Carbon::now()->addDays(1)), pode adicionar quantas horas quiser, dias, meses, etc..
+

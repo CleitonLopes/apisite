@@ -177,6 +177,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+        * Package Passport OAuh2
+        */
+        Laravel\Passport\PassportServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class
+
     ],
 
     /*

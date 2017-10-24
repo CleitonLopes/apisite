@@ -10,4 +10,11 @@ class Album extends Model
 
     protected $fillable = ['titulo'];
 
+    public function galeria()
+    {
+
+    	return $this->hasMany('App\Galeria', 'album_id');
+
+    }
+
 }
