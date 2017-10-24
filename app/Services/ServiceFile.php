@@ -21,7 +21,11 @@ class ServiceFile
 
 		$path = "{$data['album_id']}/{$data['id']}";
 
-		$this->storage::put($path, $file['file']);
+		$name = $file['file']->storeAs($file['file'], 'teste');
+
+		$this->storage::put($path, $name);
+
+		//$this->storage::put($path, $file['file']);
 
 	}
 
