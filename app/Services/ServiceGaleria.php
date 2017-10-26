@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Galeria;
 use App\Services\ServiceFile;
+use App\Services\ServiceResponse;
 
 class ServiceGaleria
 {
@@ -12,11 +13,12 @@ class ServiceGaleria
 	private $model;
 	private $serviceFile;
 
-	public function __construct(Galeria $galeria, ServiceFile $serviceFile)
+	public function __construct(Galeria $galeria, ServiceFile $serviceFile, ServiceResponse $serviceResponse)
 	{
 
 		$this->model = $galeria;
 		$this->serviceFile = $serviceFile;
+		$this->serviceResponse = $serviceResponse;
 
 	}
 
@@ -32,16 +34,13 @@ class ServiceGaleria
 	    	if ($this->model->create($data))
 	    	{
 
-	            return response()->json([
-
-					'resultado' => 'Imagem salva com sucesso !',
-					'status' => 200
-
-				]);
+	    		return $this->serviceResponse->getResponse(['Imagem salva com sucesso !', 200]);
 
 	    	}
 
 		} catch (Exception $e) {
+
+			return $this->serviceResponse->getResponse([$e->getMessage(), 400]);
 
 		}
 
@@ -62,36 +61,21 @@ class ServiceGaleria
 
 					if ($this->serviceFile->destroy($galeria['path']))
 					{
-						return response()->json([
-
-							'resultado' => 'Imagem deletada com sucesso !',
-							'status' => 200
-
-						]);
+						return $this->serviceResponse->getResponse(['Imagem excluida com sucesso !', 200]);
 					}
 
-					return response()->json([
-
-						'resultado' => 'Imagem deletada do banco mas houve algum erro ao deletar do storage, contate o suporte !',
-						'status' => 400
-
-					]);
+					return $this->serviceResponse->getResponse(['Imagem deletada do banco, mas houve algum erro ao deletar do storage, contate o suporte !', 400]);
 
 				}
 
 
 			}
 
-			return response()->json([
-
-				'resultado' => 'Imagem não encontrada, verifque !',
-				'status' => 400
-
-			]);
+			return $this->serviceResponse->getResponse(['Imagem não encontrada !', 400]);
 
 		} catch (Exception $e) {
 
-			return $e->getMessage();
+			return $this->serviceResponse->getResponse([$e->getMessage(), 400]);
 
 		}
 
