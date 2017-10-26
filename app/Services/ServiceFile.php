@@ -19,13 +19,15 @@ class ServiceFile
 	public function saveFile($data, $file)
 	{
 
-		$path = "{$data['album_id']}/{$data['id']}";
+		$path = "{$data['album_id']}";
 
-		$name = $file['file']->storeAs($file['file'], 'teste');
+		return $this->storage::put($path, $file['file']);
 
-		$this->storage::put($path, $name);
+	}
 
-		//$this->storage::put($path, $file['file']);
+	public function destroy($path)	{
+
+		return $this->storage::delete($path);
 
 	}
 

@@ -32,26 +32,20 @@ class GaleriaController extends Controller
 
     public function store(Request $request)
     {
-    	//Storage::put('1', $request->file('file'));
 
     	$file = $this->serviceUploadFile->getFile($request);
+
     	$data = $this->serviceUploadFile->getData($request);
 
-    	$result = $this->serviceGaleria->create($data);
+    	return $this->serviceGaleria->create($data, $file);
 
-    	if ($result)
-    	{
-
-    		$data['id'] = $result['id'];
-	    	$this->serviceFile->saveFile($data, $file);
-
-    	}
 
     }
 
-    public function destroy($id)
+    public function destroy($idalbum, $idimagem)
     {
 
+        return $this->serviceGaleria->destroy($idalbum, $idimagem);
 
     }
 

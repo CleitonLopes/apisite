@@ -8,7 +8,7 @@ class Galeria extends Model
 {
 
     protected $table = 'galeria';
-    protected $fillable = ['nome', 'album_id', 'nome_original', 'extensao', 'tamanho', 'mime_type'];
+    protected $fillable = ['nome', 'album_id', 'nome_original', 'extensao', 'tamanho', 'mime_type', 'path'];
 
     public function album()
     {

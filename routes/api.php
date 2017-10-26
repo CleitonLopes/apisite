@@ -21,11 +21,14 @@ Route::group(['middleware' => ['cors', 'auth:api']], function () {
 
 	});
 
-	// api/inicio
 	Route::resource('/album', 'Api\AlbumController');
+
 	Route::resource('/galeria', 'Api\GaleriaController');
+
+	Route::delete('/galeria/{idalbum}/{idimagem}', 'Api\GaleriaController@destroy');
 
 });
 
 
+//http://localhost:8000/storage/path -> caminho para as imagens
 
