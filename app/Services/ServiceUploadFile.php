@@ -28,7 +28,7 @@ class ServiceUploadFile
 
 		$file = $request->file('file');
 
-		$data['nome']			= $file->getPathName();//$request->all()['nome'] ?? "";
+		$data['nome']			= $request->all()['nome'] ?? "";
     	$data['album_id'] 		= $request->all()['album_id'];
 		$data['nome_original']  = $file->getClientOriginalName();
 		$data['extensao']		= $file->getClientOriginalExtension();

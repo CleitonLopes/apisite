@@ -21,6 +21,8 @@ Route::group(['middleware' => ['cors', 'auth:api']], function () {
 
 	});
 
+	Route::resource('/site', 'Api\SiteController');
+
 	Route::resource('/album', 'Api\AlbumController');
 
 	Route::resource('/galeria', 'Api\GaleriaController');
