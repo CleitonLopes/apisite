@@ -15,7 +15,7 @@ class ModifyGaleria extends Migration
     {
         Schema::table('galeria', function (Blueprint $table) {
 
-            $table->string('path', 60);
+            $table->string('path', 100);
         });
     }
 

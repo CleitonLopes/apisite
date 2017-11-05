@@ -1,6 +1,11 @@
 OAuth2
 ------
 
+Para habilitar o vhost e funcionar as rotas
+
+sudo a2enmod rewrite
+sudo service apache2 restart
+
 Instalação laravel passport
 
 - composer require laravel/passport
@@ -81,4 +86,187 @@ Mudando o tempo de vida do token
 - Dica para produção, colocar apenas em horas, dev nem colocar
 - Em AuthServiceProvider adicionar use Carbon\Carbon e no metodo boot  Passport::tokensExpireIn(Carbon::now()->addHours(8)),
 Passport::refreshTokensExpireIn(Carbon::now()->addDays(1)), pode adicionar quantas horas quiser, dias, meses, etc..
+
+
+
+
+
+
+--------
+
+APIRestfull Laravel
+*******************
+
+-  composer create-project --prefer-dist laravel/laravel project
+
+- php artisan make:migration create_account
+
+- Configurado migration accounts
+
+- php artisan make:migration create_bank
+
+- Configurado mitration banks
+
+- Criando seed
+
+- php artisan make:seed banks
+
+- Configurado seed banks
+
+- Rodando as migrate
+
+- php artisan migrate
+
+- Rodando as Seeds
+
+- php artisan db:seed
+
+Listando recurso paginados
+***************************
+
+- Criand controllers
+
+- php artisan make:controller Api/BanksController --resource
+
+- Criando uma rota dentro de api.php dentro da pasta routes, pois estamos fazendo uma api
+
+- Criando model Bank
+
+- php artisan make:model Bank
+
+- configurando model Bank
+
+Ordenando e limitando paginação atravez da api
+***********************************************
+
+- Criado filtros no controler
+
+- Traz os dados da pagina selecionada
+- http://localhost:8000/api/banks?page=2
+
+- Traz ordenado por code e ordem crescente com o limite de 2
+- http://localhost:8000/api/banks?order=code,asc&limit=2
+
+Filtrando dados
+***************
+
+- Condição where
+- http://localhost:8000/api/banks?where[id]=2
+
+- Condição like, title like Caixa
+- http://localhost:8000/api/banks?like=title,Caixa
+
+Inserindo registro na api
+*************************
+
+- usando o postman passando um post com title e code para inserir no model Bank
+- No model Bank configurando a propriedade fillable para gravar os dados
+
+Fazendo update no banco
+***********************
+
+- Alterado com o metodo put passando o id
+
+Removendo
+*********
+
+- Mesma coisa que o metodo update, mas usando o metodo delete
+
+Reaproveitando o crud da api de forma rapida
+********************************************
+
+- Removendo o crud feito no BanksController e colocado em um Trait
+- criar folder \app\Traits ApiControllerTrait.php com o nome de trait ApiControllerTrait
+- Configurado BanksControler chamando a trait
+
+- criando controllers Accounts sem o parametro resources
+- php artisan make:controller Api/AccountsController
+- php artisan make:model Account
+- configurado fillable em account
+- criar rota accounts
+- configurando aqui para o controller receber a trait assim ela já herda os mesmos métodos que o BanksController
+fazendo o reapreveitamento de código
+
+Relacionamentos
+***************
+
+- Criar metodo no model Accounts para fazer o relacionamento, ver documentação
+
+Liberando acesso externo
+************************
+
+- Instalação laravel/passport um pacote para trabalhar com OAuth2
+
+- composer require laravel/passport
+
+- Configuração inicial do Passport
+
+- Ir em config app.php e adicionar o provider do passport Laravel\Passport\PassportServiceProvider::class,
+
+- rodar php artisan migrate para criar as tabelas do passport
+
+- php artisan passport:install, copiar os dados que ele gera e armazenar ele em algum lugar por enquanto
+
+- Ir em Providers AuthServiceProvider.php dentro do metodo boot, adicionar Passport::routes()
+
+- Dentro de router criar a rota Route::group(['middleware' => ['auth:api']], function () {} e jogar as outras
+rotas dentro dela
+
+- Rodar a autenticação que o laravel tem para poder testar o pacote
+
+- php artisan make:auth
+
+- logo em seguida no navegador registrar um usuario em register, criado usuario e senha
+
+- Para autenciar pela api criar um metodo post com os parametros salvos do passport e usuario e senha criados
+
+localhost:8000/oauth/token
+
+grant_type - password
+client_id - 1
+client_secret - PrRahJMYcmSxaEznmKHmIipfDr9Df5UQRZ8Yjn3m
+username - usuario criado no register o laravel
+password - senha criada
+scope - deixar vazio por enquanto
+
+- O resultado
+
+{
+    "token_type": "Bearer",
+
+    "expires_in": 31536000,
+
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjA1NDM0ZDBmN2JjZWZjODQ0ODUzYTk2ODg1ZTkyNzI4OWQyYWY5OWI5ODZiZDE1YzEzMGEyZWM1ODNjYWVlZGU5Y2EzYzIyYzQzMTI3ZGUxIn0.eyJhdWQiOiIyIiwianRpIjoiMDU0MzRkMGY3YmNlZmM4NDQ4NTNhOTY4ODVlOTI3Mjg5ZDJhZjk5Yjk4NmJkMTVjMTMwYTJlYzU4M2NhZWVkZTljYTNjMjJjNDMxMjdkZTEiLCJpYXQiOjE1MDY3ODg2MTMsIm5iZiI6MTUwNjc4ODYxMywiZXhwIjoxNTM4MzI0NjEzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.CTLmWhZSM26jIBNLUF4UPETLCy-DvD2FasdslomrfHu3uHWsf6UQH2RHrVy6jSAU90-H5gmUnjiTN-MYmceB-y2IEREnQsi4cK16nauLJH-ioKkF_hLwUqkuRqxL5ipG0bfqe6NcIvBZAG8irsYK8A-M_jVguNYj9X6_IBDlstE8TfA8BDzVwN92LivvnSMwLI0d1so5hgHObMEqM00Hm5aL90paF9Lf5H3sXmUCTu8q09a1XwvH6TXSOhCvwW1u-0KvQvG0ZX3XBcqF5c7RVu8q23p5dSkxnfTl86QKUuG9twFVxNRQX9xhtb4QS3TVGIKuF6t4cbqLB1WC_RUDeZFTnu-bLodNGhg9kY8xHzWNWAdV9vg9PwZa_i7mGvqJy60vnZRd09ZfhP2pasRZFIuHa_rWohhPrHy5JAzDQLtUXpe3jBHSWz0cUvgjbaXH3mFB2JmY2iAjm4UWdM6z7APtIKG1_9UovfjYJWcOY6q858j9vmgrP6hmEOfTNUShBKxltxOGHjmsktytZL9qPbJ3WX6ClXnICd0S3GDO1L4Qv1IJmLzkoxxGxmosxGJRyr86sKnoswdKzvwpELWvBMHyr8P6p9XUsqMciVwMtH0D78Occ9L2j52UeWEdylOBua3ub0GYwtGoS7w3q3mmQaqFC1NrjCyhrNTnrnMd19s",
+
+    "refresh_token": "def50200b6ea7a9da7592eef55e9369240ec2e645618aeccbeb20fe3734aff56163705acdf264a459685815a8b7c69f4864f7287c9316fc4c9361d6e0245f80059ffe1b2d482620dfdce1ab85ef6f6dcd724cdd7b83f9694ccdd7938c139e4abc4aed9be537abd1952dca74bb30f9c8f22329ef9609078be9a485bde38047208da99829a89310c651aed8d4f89c69f8549c8432277ef34c40228be622d31579285f8a6980b7514a6dd41a128c8818c8eb4d2457c90f3f3804f2bb3b3feb4758c37fa15450e731c9588902ddc6e03b437cb09fe2ac0cdec3469a8578dacca4c7879c753cdc0a719b5067d85fe4b04f08ad26db73f3d5fdf3fb40a6a641159afecefa8d87505eaacaa46ead2cd4adfdc29fef3d1a6096a24f36104028cd1a2e5e023302ce55bb7132fc08abb59c20a5d16ed21e9848ae37277720530f2eeef5c6111c5318a77b68899bd58029b38a446ac5a47c897f16d1480163982da7f5711c9b5"
+}
+
+- Por padrão a validade desse token é de 1ano
+
+- Salvar o acces_token no mesmo lugar dos dados do passport por enquanto
+
+- Nas rotas agora, acrescenta no header das requisições o Authorization e valor Bearer mas o valor do access_token
+
+Usando o laravel para fazer a liberação do Cors
+***********************************************
+
+- composer require barryvdh/laravel-cors
+
+- em config/app.php adiconar o provider Barryvdh\Cors\ServiceProvider::class
+
+- Depois php artisan vendor:publish --provider="Barryvdh\Cors\ServiceProvider", ele adiciona dentro de config um novo
+arquivo chamado cors.php
+
+- Para finalizar adicionar o middleware cors em routes, adicionado antes do auth:api e dentro de Http/Kernel adicionar em
+routeMiddleware 'cors' => \Barryvdh\Cors\HandleCors::class,
+
+Mudando o tempo de vida do token
+*********************************
+
+- Dica para produção, colocar apenas em horas, dev nem colocar
+- Em AuthServiceProvider adicionar use Carbon\Carbon e no metodo boot  Passport::tokensExpireIn(Carbon::now()->addHours(8)),
+Passport::refreshTokensExpireIn(Carbon::now()->addDays(1)), pode adicionar quantas horas quiser, dias, meses, etc..
+
+
+
 

@@ -15,10 +15,10 @@ class AlterTableGaleria extends Migration
     {
         Schema::table('galeria', function (Blueprint $table) {
 
-            $table->string('nome_original', 45);
+            $table->string('nome_original', 100);
             $table->string('extensao', 45);
             $table->string('tamanho', 45);
-            $table->string('mime_type', 10);
+            $table->string('mime_type', 20);
 
         });
     }

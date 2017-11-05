@@ -17,7 +17,7 @@ class CreateGaleria extends Migration
         Schema::create('galeria', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->string('nome', 45);
+            $table->string('nome', 100);
             $table->timestamps();
 
             $table->integer('album_id');
