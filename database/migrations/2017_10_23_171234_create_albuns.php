@@ -13,11 +13,15 @@ class CreateAlbuns extends Migration
      */
     public function up()
     {
+
         Schema::create('albuns', function (Blueprint $table) {
-            $table->increments('id');
+
+            $table->increments('id')->unsigned();
             $table->string('titulo', 45);
             $table->timestamps();
+
         });
+
     }
 
     /**

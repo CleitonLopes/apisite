@@ -17,10 +17,18 @@ class CreateGaleria extends Migration
         Schema::create('galeria', function (Blueprint $table) {
 
             $table->increments('id');
+            $table->integer('album_id')->unsigned();
             $table->string('nome', 100);
+            $table->string('nome_original', 100);
+            $table->string('extensao', 45);
+            $table->string('tamanho', 45);
+            $table->string('mime_type', 20);
+            $table->string('path', 100);
             $table->timestamps();
 
-            $table->integer('album_id');
+            $table->foreign('album_id')
+                    ->references('id')->on('albuns')
+                    ->onDelete('cascade');
 
         });
 
