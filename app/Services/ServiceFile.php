@@ -25,7 +25,14 @@ class ServiceFile
 
 	}
 
-	public function destroy($path)	{
+	public function destroy($path, $directory = null)	{
+
+		if ($directory)
+		{
+
+			return $this->storage::deleteDirectory($path);
+
+		}
 
 		return $this->storage::delete($path);
 

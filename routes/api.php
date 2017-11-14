@@ -25,6 +25,8 @@ Route::group(['middleware' => ['cors', 'auth:api']], function () {
 
 	Route::resource('/album', 'Api\AlbumController');
 
+	Route::delete('/album/{idalbum}, Api\AlbumController@destroy');
+
 	Route::resource('/galeria', 'Api\GaleriaController');
 
 	Route::delete('/galeria/{idalbum}/{idimagem}', 'Api\GaleriaController@destroy');
