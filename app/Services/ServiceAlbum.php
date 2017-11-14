@@ -28,16 +28,22 @@ class ServiceAlbum
 		try
 		{
 
-			if ($album = $this->album->destroy($idalbum))
+			if ($album = $this->album->find($idalbum))
 			{
 
-				if ($this->serviceFile->destroy($idalbum, true)) {
+				if ($album->delete())
+				{
 
-					return $this->serviceResponse->getResponse(['Album excluido com sucesso', 200]);
+					if ($this->serviceFile->destroy($idalbum, true)) {
+
+							return $this->serviceResponse->getResponse(['Album excluido com sucesso', 200]);
+
+					}
+
+					return $this->serviceResponse->getResponse(['Album deletado do banco, mas houve algum erro ao deletar do storage, contate o suporte !', 400]);
 
 				}
 
-				return $this->serviceResponse->getResponse(['Album deletado do banco, mas houve algum erro ao deletar do storage, contate o suporte !', 400]);
 
 			}
 
