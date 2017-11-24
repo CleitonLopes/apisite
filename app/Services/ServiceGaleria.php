@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Galeria;
+use App\Album;
 use App\Services\ServiceFile;
 use App\Services\ServiceResponse;
 
@@ -11,12 +12,14 @@ class ServiceGaleria
 {
 
 	private $model;
+	private $modelAlbum;
 	private $serviceFile;
 
-	public function __construct(Galeria $galeria, ServiceFile $serviceFile, ServiceResponse $serviceResponse)
+	public function __construct(Galeria $galeria, ServiceFile $serviceFile, ServiceResponse $serviceResponse, Album $album)
 	{
 
 		$this->model = $galeria;
+		$this->modelAlbum = $album;
 		$this->serviceFile = $serviceFile;
 		$this->serviceResponse = $serviceResponse;
 
@@ -33,6 +36,10 @@ class ServiceGaleria
 
 	    	if ($this->model->create($data))
 	    	{
+
+	    		$this->modelAlbum
+	    			->where('id', $data['album_id'])
+	    			->update(['image' => 1]);
 
 	    		return $this->serviceResponse->getResponse(['Imagem salva com sucesso !', 200]);
 

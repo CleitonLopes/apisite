@@ -117,6 +117,10 @@ APIRestfull Laravel
 
 - php artisan migrate
 
+- alterar ou criar coluna para tabela criada
+
+- php artisan make:migration crate_new_campo_albuns --table=albuns
+
 - Rodando as Seeds
 
 - php artisan db:seed
@@ -266,7 +270,5 @@ Mudando o tempo de vida do token
 - Dica para produção, colocar apenas em horas, dev nem colocar
 - Em AuthServiceProvider adicionar use Carbon\Carbon e no metodo boot  Passport::tokensExpireIn(Carbon::now()->addHours(8)),
 Passport::refreshTokensExpireIn(Carbon::now()->addDays(1)), pode adicionar quantas horas quiser, dias, meses, etc..
-
-
 
 

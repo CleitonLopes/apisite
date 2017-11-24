@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Album;
 use App\Http\Controllers\Traits\ApiControllerTrait;
 use App\Services\ServiceAlbum;
+use Illuminate\Http\Request;
 
 class AlbumController extends Controller
 {
@@ -24,7 +25,7 @@ class AlbumController extends Controller
 
 	}
 
-	public function destroy($idalbum)
+    public function destroy($idalbum)
 	{
 
 		return $this->serviceAlbum->destroy($idalbum);

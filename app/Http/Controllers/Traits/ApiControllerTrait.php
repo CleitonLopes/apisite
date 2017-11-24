@@ -26,8 +26,6 @@ trait ApiControllerTrait
 
         }
 
-            //dd($request->all());
-
         if ($order !== null)
         {
 
@@ -59,7 +57,6 @@ trait ApiControllerTrait
 
     public function show($id)
     {
-
         return response()->json($this->model->with($this->relationships())->findOrFail($id));
 
     }

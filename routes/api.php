@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/album-clients', 'Api\AlbumController@index');
+Route::get('/album-clients/{idalbum}', 'Api\AlbumController@show');
+Route::post('/envio-email', 'Api\EnvioEmailController@store');
+
 Route::group(['middleware' => ['cors', 'auth:api']], function () {
 
 	Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -32,7 +36,6 @@ Route::group(['middleware' => ['cors', 'auth:api']], function () {
 	Route::delete('/galeria/{idalbum}/{idimagem}', 'Api\GaleriaController@destroy');
 
 });
-
 
 //http://localhost:8000/storage/path -> caminho para as imagens
 
